@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import variables from '../../styles/variables';
 import { APP_API } from '../../config';
+import { observer } from 'mobx-react';
+import { storeTodoData } from '../../store/todoData';
 
 export const TodoList = styled.li`
   width: 100%;
@@ -13,6 +15,7 @@ export const TodoContent = styled.div`
   width: 70%;
   height: 100%;
   background-color: burlywood;
+  text-decoration: ${props => props.isCompleted && 'line-through'};
   ${variables.flex({ justify: 'start' })};
 
   button {
@@ -20,7 +23,7 @@ export const TodoContent = styled.div`
     width: 20px;
     height: 20px;
     border: 2px solid gray;
-    background-color: ${props => props.clearBtn};
+    background-color: ${props => (props.isCompleted ? 'green' : 'gray')};
     border-radius: 50%;
     margin-right: 10px;
   }
@@ -36,25 +39,74 @@ export const TodoBtns = styled.div`
     width: 40%;
   }
 `;
+//
 const TodoItem = ({ id, isCompleted, todoContent }) => {
+  const { todoArr } = storeTodoData;
   const getToken = localStorage.getItem('access_token');
 
-  const deleteRequest = id => {
-    fetch(`${APP_API.todo}/${id}`, {
+  const deleteRequest = async () => {
+    await fetch(`${APP_API.todo}/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken}` },
     });
+
+    await fetch(`${APP_API.todo}`, {
+      headers: {
+        Authorization: `Bearer ${getToken}`,
+      },
+    })
+      .then(res => res.json())
+      .then(result => {
+        storeTodoData.setTodoArr(result);
+      });
+  };
+
+  const editRequest = async () => {
+    await fetch(`${APP_API.todo}/${id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${getToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        todo: todoContent,
+        isCompleted: !isCompleted,
+      }),
+    })
+      .then(res => res.json())
+      .then(result => {
+        const updatedArr = todoArr.map(data => {
+          if (data.id === result.id) {
+            return result;
+          }
+
+          return data;
+        });
+
+        storeTodoData.setTodoArr(updatedArr);
+      });
+
+    // await fetch(`${APP_API.todo}`, {
+    //   headers: {
+    //     Authorization: `Bearer ${getToken}`,
+    //   },
+    // })
+    //   .then(res => res.json())
+    //   .then(result => {
+    //     console.log(result);
+    //     // storeTodoData.setTodoArr(result);
+    //   });
   };
 
   return (
     <TodoList key={id} id={id}>
-      <TodoContent clearBtn={isCompleted ? 'green' : 'gray'}>
-        <button type="button" />
+      <TodoContent isCompleted={isCompleted}>
+        <button type="button" onClick={editRequest} />
         {todoContent}
       </TodoContent>
       <TodoBtns>
         <button type="button">수정</button>
-        <button type="button" onClick={() => deleteRequest(id)}>
+        <button type="button" onClick={deleteRequest}>
           삭제
         </button>
       </TodoBtns>

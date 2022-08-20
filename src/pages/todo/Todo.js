@@ -1,12 +1,18 @@
+import { observer } from 'mobx-react';
+
 import * as S from './TodoStyles';
 import { useState, useEffect } from 'react';
 import { APP_API } from '../../config';
 import TodoItem from './TodoItem';
+import { storeTodoData } from '../../store/todoData';
+import { toJS } from 'mobx';
 
-const Todo = () => {
-  const [todoData, setTodoData] = useState([]);
+const Todo = observer(() => {
   const [todoText, setTodoText] = useState('');
   const getToken = localStorage.getItem('access_token');
+
+  const { todoArr } = storeTodoData;
+  console.log(toJS(todoArr));
 
   useEffect(() => {
     fetch(`${APP_API.todo}`, {
@@ -16,15 +22,12 @@ const Todo = () => {
     })
       .then(res => res.json())
       .then(result => {
-        console.log(result);
-        setTodoData(result);
+        storeTodoData.setTodoArr(result);
       });
   }, []);
 
-  const todoPost = () => {
-    console.log('post', todoText);
-
-    fetch(`${APP_API.todo}`, {
+  const todoPost = async () => {
+    await fetch(`${APP_API.todo}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${getToken}`,
@@ -35,8 +38,17 @@ const Todo = () => {
       }),
     })
       .then(res => res.json())
-      .then(result => console.log(result));
-    setTodoText('');
+      .then(result => setTodoText(''));
+
+    await fetch(`${APP_API.todo}`, {
+      headers: {
+        Authorization: `Bearer ${getToken}`,
+      },
+    })
+      .then(res => res.json())
+      .then(result => {
+        storeTodoData.setTodoArr(result);
+      });
   };
 
   return (
@@ -52,7 +64,7 @@ const Todo = () => {
         </button>
       </S.TodoTop>
       <S.TodoBody>
-        {todoData.map(data => (
+        {todoArr.map(data => (
           <TodoItem
             key={data.id}
             id={data.id}
@@ -63,6 +75,6 @@ const Todo = () => {
       </S.TodoBody>
     </S.TodoWrapper>
   );
-};
+});
 
 export default Todo;
