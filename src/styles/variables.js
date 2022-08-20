@@ -1,11 +1,11 @@
-import { css } from "styled-components";
+import { css } from 'styled-components';
 
 const variables = {
-  flex: (direction = "row", justify = "center", align = "center") => `
+  flex: obj => `
     display: flex;
-    flex-direction: ${direction};
-    justify-content: ${justify};
-    align-items: ${align};
+    flex-direction: ${obj?.direction ?? 'row'};
+    justify-content: ${obj?.justify ?? 'center'};
+    align-items: ${obj?.alignItem ?? 'center'};
   `,
 
   absoluteCenter: css`

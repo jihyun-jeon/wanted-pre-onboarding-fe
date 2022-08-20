@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-family: 'Noto Sans KR', sans-serif; 
+    font-family: 'Karla', sans-serif; 
   }
   
   a, button {
