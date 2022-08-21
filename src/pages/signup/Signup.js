@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { APP_API } from '../../config';
-import * as S from '../../components/commonComp';
+import * as S from '../../components/authFormStyle';
 
 const Signup = () => {
   const [signupValue, setSignupValue] = useState({ email: '', password: '' });

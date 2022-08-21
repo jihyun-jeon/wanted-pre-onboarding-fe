@@ -34,9 +34,9 @@ export const InputBox = styled.input.attrs(props => ({
   border: 1px solid gray;
 `;
 
-export const SubmitBtn = styled.button.attrs(props => ({
+export const SubmitBtn = styled.button.attrs({
   type: 'submit',
-}))`
+})`
   margin: 5px 0;
   border-radius: 120px;
   width: 200px;

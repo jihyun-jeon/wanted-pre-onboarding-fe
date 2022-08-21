@@ -10,7 +10,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const Todo = observer(() => {
   const [todoText, setTodoText] = useState('');
   const getToken = localStorage.getItem('access_token');
-  console.log(getToken);
 
   const location = useLocation().pathname;
   const navigate = useNavigate();
@@ -25,7 +24,6 @@ const Todo = observer(() => {
 
   useEffect(() => {
     if (!getToken) {
-      // [문제] 1.getToken 이 처음에 null임 -> 2. 그 상태에서 get요청해서 오류남 -> 3. 이후 getToken값이 제대로 생김
       return;
     }
     fetch(`${APP_API.todo}`, {
@@ -40,7 +38,7 @@ const Todo = observer(() => {
   }, [getToken]);
 
   const todoPost = async () => {
-    await fetch(`${APP_API.todo}`, {
+    const res = await fetch(`${APP_API.todo}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${getToken}`,
@@ -49,19 +47,12 @@ const Todo = observer(() => {
       body: JSON.stringify({
         todo: todoText,
       }),
-    })
-      .then(res => res.json())
-      .then(result => setTodoText(''));
+    });
 
-    await fetch(`${APP_API.todo}`, {
-      headers: {
-        Authorization: `Bearer ${getToken}`,
-      },
-    })
-      .then(res => res.json())
-      .then(result => {
-        storeTodoData.setTodoArr(result);
-      });
+    const result = await res.json();
+
+    storeTodoData.addTodo(result);
+    setTodoText('');
   };
 
   return (

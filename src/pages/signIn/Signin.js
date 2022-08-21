@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { APP_API } from '../../config';
-import * as S from '../../components/commonComp';
+import * as S from '../../components/authFormStyle';
 
 const SignIn = () => {
   const [signinValue, setSigninValue] = useState({ email: '', password: '' });

@@ -17,3 +17,4 @@
 
     1. npm install
     2. npm start로 서버 실행
+    3. 로그인 아이디 : todo1@todo.com / 비밀번호 : todotodo1

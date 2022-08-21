@@ -1,40 +1,26 @@
-import styled from 'styled-components';
-import React, { useState, useEffect } from 'react';
-import variables from '../../../styles/variables';
+import React, { useState } from 'react';
 import { APP_API } from '../../../config';
 import { observer } from 'mobx-react';
 import { storeTodoData } from '../../../store/todoData';
 import * as S from './TodoItemStyles';
 
-//
 const TodoItem = observer(({ id, isCompleted, todoContent }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isClear, setIsClear] = useState(isCompleted);
   const [editText, setEditText] = useState(todoContent);
-  const { todoArr } = storeTodoData;
   const getToken = localStorage.getItem('access_token');
 
-  const deleteRequest = async () => {
-    await fetch(`${APP_API.todo}/${id}`, {
+  const deleteRequest = () => {
+    fetch(`${APP_API.todo}/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken}` },
-    });
-
-    await fetch(`${APP_API.todo}`, {
-      headers: {
-        Authorization: `Bearer ${getToken}`,
-      },
-    })
-      .then(res => res.json())
-      .then(result => {
-        storeTodoData.setTodoArr(result);
-      });
+    }).then(res => res.ok && storeTodoData.deleteTodo(id));
   };
 
   const editRequest = async editContent => {
     const postText = editContent || todoContent;
 
-    await fetch(`${APP_API.todo}/${id}`, {
+    const res = await fetch(`${APP_API.todo}/${id}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${getToken}`,
@@ -44,23 +30,18 @@ const TodoItem = observer(({ id, isCompleted, todoContent }) => {
         todo: postText,
         isCompleted: isClear,
       }),
-    })
-      .then(res => res.json())
-      .then(result => {
-        const updatedArr = todoArr.map(data => {
-          if (data.id === result.id) {
-            return result;
-          }
+    });
 
-          return data;
-        });
+    if (!res.ok) {
+      alert('수정에 실패했습니다');
+    }
 
-        storeTodoData.setTodoArr(updatedArr);
-      });
+    const result = await res.json();
+    storeTodoData.editTodo(result);
   };
 
   return (
-    <S.TodoList key={id} id={id}>
+    <S.TodoList id={id}>
       {!isEditMode && (
         <S.TodoContent isClear={isClear}>
           <S.ClearCheckBtn
