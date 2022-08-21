@@ -1,6 +1,6 @@
 export const darkMode = {
   textColor: 'white',
-  backgroundColor: 'teal',
+  backgroundColor: 'black',
 };
 
 export const whiteMode = {

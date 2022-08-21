@@ -36,9 +36,7 @@ const SignIn = () => {
           return;
         }
 
-        if (result.access_token) {
-          localStorage.setItem('access_token', result.access_token);
-        }
+        localStorage.setItem('access_token', result.access_token);
         alert('로그인 성공');
         navigate('/todo');
       });

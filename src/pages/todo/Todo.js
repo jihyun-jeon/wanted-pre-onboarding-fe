@@ -3,18 +3,32 @@ import { observer } from 'mobx-react';
 import * as S from './TodoStyles';
 import { useState, useEffect } from 'react';
 import { APP_API } from '../../config';
-import TodoItem from './TodoItem';
+import TodoItem from './todoitem/TodoItem';
 import { storeTodoData } from '../../store/todoData';
-import { toJS } from 'mobx';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Todo = observer(() => {
   const [todoText, setTodoText] = useState('');
   const getToken = localStorage.getItem('access_token');
+  console.log(getToken);
+
+  const location = useLocation().pathname;
+  const navigate = useNavigate();
 
   const { todoArr } = storeTodoData;
-  console.log(toJS(todoArr));
+  // console.log(toJS(todoArr));
 
   useEffect(() => {
+    if (!getToken && location === '/todo') {
+      navigate('/');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!getToken) {
+      // [문제] 1.getToken 이 처음에 null임 -> 2. 그 상태에서 get요청해서 오류남 -> 3. 이후 getToken값이 제대로 생김
+      return;
+    }
     fetch(`${APP_API.todo}`, {
       headers: {
         Authorization: `Bearer ${getToken}`,
@@ -22,9 +36,10 @@ const Todo = observer(() => {
     })
       .then(res => res.json())
       .then(result => {
+        console.log('result', result);
         storeTodoData.setTodoArr(result);
       });
-  }, []);
+  }, [getToken]);
 
   const todoPost = async () => {
     await fetch(`${APP_API.todo}`, {
@@ -64,7 +79,7 @@ const Todo = observer(() => {
         </button>
       </S.TodoTop>
       <S.TodoBody>
-        {todoArr.map(data => (
+        {todoArr?.map(data => (
           <TodoItem
             key={data.id}
             id={data.id}

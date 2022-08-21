@@ -1,6 +1,8 @@
 const BASE_URL =
   'https://5co7shqbsf.execute-api.ap-northeast-2.amazonaws.com/production';
 
+// const BASE_URL2 = 'https://localhost:8000';
+
 export const APP_API = {
   signin: `${BASE_URL}/auth/signin`,
   signup: `${BASE_URL}/auth/signup`,
