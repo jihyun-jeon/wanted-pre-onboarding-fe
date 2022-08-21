@@ -7,6 +7,9 @@ import * as S from '../../components/commonComp';
 const Signup = () => {
   const [signupValue, setSignupValue] = useState({ email: '', password: '' });
 
+  const isValid =
+    signupValue.email.includes('@') && signupValue.password.length >= 8;
+
   const SignupRequest = e => {
     e.preventDefault();
 
@@ -31,7 +34,7 @@ const Signup = () => {
 
   return (
     <>
-      <h1>Sign up 회원가입</h1>
+      <h1>회원가입</h1>
       <S.Form onSubmit={SignupRequest}>
         <S.LabelWrapper>
           <S.Label>
@@ -39,6 +42,7 @@ const Signup = () => {
             <S.InputBox
               inputType="email"
               name="email"
+              placeholder="@포함 필수"
               value={signupValue.email}
               onChange={e =>
                 setSignupValue(prev => ({ ...prev, email: e.target.value }))
@@ -52,6 +56,7 @@ const Signup = () => {
               inputType="password"
               name="password"
               length="8"
+              placeholder="8자리 이상"
               value={signupValue.password}
               onChange={e =>
                 setSignupValue(prev => ({ ...prev, password: e.target.value }))
@@ -60,7 +65,7 @@ const Signup = () => {
           </S.Label>
         </S.LabelWrapper>
 
-        <S.SubmitBtn>sign up</S.SubmitBtn>
+        <S.SubmitBtn disabled={!isValid}>sign up</S.SubmitBtn>
         <Link to="/">
           go to sign in
           <S.GotoBtn>sign in</S.GotoBtn>

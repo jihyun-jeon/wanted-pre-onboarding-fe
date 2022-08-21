@@ -5,5 +5,5 @@ export const darkMode = {
 
 export const whiteMode = {
   textColor: 'black',
-  backgroundColor: 'white',
+  backgroundColor: '#dbcaca',
 };

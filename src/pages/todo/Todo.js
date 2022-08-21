@@ -16,7 +16,6 @@ const Todo = observer(() => {
   const navigate = useNavigate();
 
   const { todoArr } = storeTodoData;
-  // console.log(toJS(todoArr));
 
   useEffect(() => {
     if (!getToken && location === '/todo') {
@@ -36,7 +35,6 @@ const Todo = observer(() => {
     })
       .then(res => res.json())
       .then(result => {
-        console.log('result', result);
         storeTodoData.setTodoArr(result);
       });
   }, [getToken]);
@@ -67,28 +65,31 @@ const Todo = observer(() => {
   };
 
   return (
-    <S.TodoWrapper>
-      <S.TodoTop>
-        <input
-          type="text"
-          value={todoText}
-          onChange={e => setTodoText(e.target.value)}
-        />
-        <button type="button" onClick={todoPost}>
-          add
-        </button>
-      </S.TodoTop>
-      <S.TodoBody>
-        {todoArr?.map(data => (
-          <TodoItem
-            key={data.id}
-            id={data.id}
-            isCompleted={data.isCompleted}
-            todoContent={data.todo}
+    <>
+      <h1>Todo List</h1>
+      <S.TodoWrapper>
+        <S.TodoTop>
+          <input
+            type="text"
+            value={todoText}
+            onChange={e => setTodoText(e.target.value)}
           />
-        ))}
-      </S.TodoBody>
-    </S.TodoWrapper>
+          <button type="button" onClick={todoPost}>
+            add
+          </button>
+        </S.TodoTop>
+        <S.TodoBody>
+          {todoArr?.map(data => (
+            <TodoItem
+              key={data.id}
+              id={data.id}
+              isCompleted={data.isCompleted}
+              todoContent={data.todo}
+            />
+          ))}
+        </S.TodoBody>
+      </S.TodoWrapper>
+    </>
   );
 });
 

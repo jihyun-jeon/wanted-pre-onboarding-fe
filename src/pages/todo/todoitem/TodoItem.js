@@ -10,7 +10,7 @@ import * as S from './TodoItemStyles';
 const TodoItem = observer(({ id, isCompleted, todoContent }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isClear, setIsClear] = useState(isCompleted);
-  const [editText, setEditText] = useState('');
+  const [editText, setEditText] = useState(todoContent);
   const { todoArr } = storeTodoData;
   const getToken = localStorage.getItem('access_token');
 
@@ -75,7 +75,12 @@ const TodoItem = observer(({ id, isCompleted, todoContent }) => {
       )}
 
       {/* 수정모드 */}
-      {isEditMode && <S.TodoEdit onChange={e => setEditText(e.target.value)} />}
+      {isEditMode && (
+        <S.TodoEdit
+          value={editText}
+          onChange={e => setEditText(e.target.value)}
+        />
+      )}
 
       {!isEditMode && (
         <S.TodoControlBtns>

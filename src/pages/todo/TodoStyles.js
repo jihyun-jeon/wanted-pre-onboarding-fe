@@ -4,14 +4,15 @@ import variables from '../../styles/variables';
 export const TodoWrapper = styled.div`
   width: 60%;
   height: 90vh;
-  background-color: saddlebrown;
+  margin-top: 20px;
+  background-color: gray;
   ${variables.flex({ direction: 'column', justify: 'start' })}
 `;
 
 export const TodoTop = styled.div`
   width: 100%;
   ${variables.flex()}
-  margin-top: 60px;
+  margin-top: 30px;
 
   input {
     width: 50%;
@@ -25,7 +26,6 @@ export const TodoTop = styled.div`
 `;
 
 export const TodoBody = styled.ul`
-  border: 1px solid red;
   width: 70%;
   height: 80%;
   margin-top: 40px;

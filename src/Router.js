@@ -20,7 +20,7 @@ const Container = styled.div`
 
 function Router() {
   return (
-    <ThemeProvider theme={{ themestyle: darkMode, variables }}>
+    <ThemeProvider theme={{ themestyle: whiteMode, variables }}>
       <GlobalStyle />
       <Container>
         <BrowserRouter>

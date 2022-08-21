@@ -31,7 +31,7 @@ const SignIn = () => {
     })
       .then(res => res.json())
       .then(result => {
-        if (result.error === 'Not Found') {
+        if (result.message === 'Unauthorized' || result.error === 'Not Found') {
           alert('해당 사용자가 존재하지 않습니다.');
           return;
         }
@@ -44,7 +44,7 @@ const SignIn = () => {
 
   return (
     <>
-      <h1>Sign In 로그인</h1>
+      <h1>로그인</h1>
       <S.Form onSubmit={singInRequest}>
         <S.LabelWrapper>
           <S.Label>
@@ -52,6 +52,7 @@ const SignIn = () => {
             <S.InputBox
               inputType="email"
               name="email"
+              placeholder="@포함 필수"
               value={signinValue.eamil}
               onChange={e =>
                 setSigninValue(prev => ({ ...prev, email: e.target.value }))
@@ -65,6 +66,7 @@ const SignIn = () => {
               inputType="password"
               name="password"
               length="8"
+              placeholder="8자리 이상"
               value={signinValue.password}
               onChange={e =>
                 setSigninValue(prev => ({ ...prev, password: e.target.value }))
@@ -73,12 +75,7 @@ const SignIn = () => {
           </S.Label>
         </S.LabelWrapper>
 
-        <S.SubmitBtn
-          disabled={!isValid}
-          cursor={!isValid ? 'not-allowed' : 'poiner'}
-        >
-          sign in
-        </S.SubmitBtn>
+        <S.SubmitBtn disabled={!isValid}>sign in</S.SubmitBtn>
         <Link to="/signup">
           go to sign up
           <S.GotoBtn>sign up</S.GotoBtn>

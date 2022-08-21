@@ -29,18 +29,19 @@ export const InputBox = styled.input.attrs(props => ({
   name: props.name,
   required: true,
   minLength: props.length,
+  placeholder: props.placeholder,
 }))`
   border: 1px solid gray;
 `;
 
-export const SubmitBtn = styled.button.attrs({
+export const SubmitBtn = styled.button.attrs(props => ({
   type: 'submit',
-})`
+}))`
   margin: 5px 0;
   border-radius: 120px;
   width: 200px;
   background-color: orange;
-  cursor: ${props => props.cursor};
+  cursor: ${props => props.disabled && 'not-allowed'};
 `;
 
 export const GotoBtn = styled(SubmitBtn).attrs({ type: 'button' })`
