@@ -5,7 +5,7 @@
 
 ### 데모 영상
 
-👉 [영상 보러가기](https://www.youtube.com/watch?v=gz4mi5QC5KM)
+👉 [영상 보러가기](https://www.youtube.com/watch?v=PMbGETHeKjw)
 
 ### 사용 기술
 
