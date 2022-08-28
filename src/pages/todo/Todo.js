@@ -6,6 +6,8 @@ import { APP_API } from '../../config';
 import TodoItem from './todoitem/TodoItem';
 import { storeTodoData } from '../../store/todoData';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionsCreator } from '../../store/todoData';
 
 const Todo = observer(() => {
   const [todoText, setTodoText] = useState('');
@@ -14,7 +16,9 @@ const Todo = observer(() => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
 
-  const { todoArr } = storeTodoData;
+  const dispatch = useDispatch();
+  // const { todoArr } = storeTodoData; // ✅
+  const todoArr = useSelector(state => state);
 
   useEffect(() => {
     if (!getToken && location === '/todo') {
@@ -33,7 +37,8 @@ const Todo = observer(() => {
     })
       .then(res => res.json())
       .then(result => {
-        storeTodoData.setTodoArr(result);
+        // storeTodoData.setTodoArr(result); // ✅
+        dispatch(actionsCreator.d_setTodoArr(result));
       });
   }, [getToken]);
 
@@ -51,7 +56,8 @@ const Todo = observer(() => {
 
     const result = await res.json();
 
-    storeTodoData.addTodo(result);
+    // storeTodoData.addTodo(result); // ✅
+    dispatch(actionsCreator.d_addTodo(result));
     setTodoText('');
   };
 

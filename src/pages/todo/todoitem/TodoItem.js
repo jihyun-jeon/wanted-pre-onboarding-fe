@@ -3,18 +3,22 @@ import { APP_API } from '../../../config';
 import { observer } from 'mobx-react';
 import { storeTodoData } from '../../../store/todoData';
 import * as S from './TodoItemStyles';
+import { actionsCreator } from '../../../store/todoData';
+import { useDispatch } from 'react-redux';
 
 const TodoItem = observer(({ id, isCompleted, todoContent }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isClear, setIsClear] = useState(isCompleted);
   const [editText, setEditText] = useState(todoContent);
   const getToken = localStorage.getItem('access_token');
+  const dispatch = useDispatch();
 
   const deleteRequest = () => {
     fetch(`${APP_API.todo}/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken}` },
-    }).then(res => res.ok && storeTodoData.deleteTodo(id));
+      // }).then(res => res.ok && storeTodoData.deleteTodo(id)); // ✅
+    }).then(res => res.ok && dispatch(actionsCreator.d_deleteTodo(id)));
   };
 
   const editRequest = async editContent => {
@@ -37,7 +41,8 @@ const TodoItem = observer(({ id, isCompleted, todoContent }) => {
     }
 
     const result = await res.json();
-    storeTodoData.editTodo(result);
+    // storeTodoData.editTodo(result); // ✅
+    dispatch(actionsCreator.d_editTodo(result));
   };
 
   return (
