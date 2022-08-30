@@ -63,6 +63,7 @@ export const actionsCreator = {
 // action = {type : deleteTodo등 , content:[] , id : id}
 const reducer = (
   todoArr = [
+    // todoArr가 state임.
     {
       id: 1,
       todo: 'todo2',
