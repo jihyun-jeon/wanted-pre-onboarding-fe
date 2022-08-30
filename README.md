@@ -18,3 +18,8 @@
     1. npm install
     2. npm start로 서버 실행
     3. 로그인 아이디 : todo1@todo.com / 비밀번호 : todotodo1
+
+### 브랜치 설명
+
+1. main : 모벡스를 활용한 상태관리
+2. refactor-redux : 리덕스를 활용한 상태관리
